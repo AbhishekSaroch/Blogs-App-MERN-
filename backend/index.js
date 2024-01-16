@@ -7,7 +7,9 @@ dotenv.config();
 
 database.dbConnect();
 const user=require("./routes/user");
+const blog=require("./routes/blog");
 app.use("/api/v1",user);
+app.use("/api/v1",blog);
 app.listen(8000,()=>{
     console.log("App Started At 3000 Port")
 })
