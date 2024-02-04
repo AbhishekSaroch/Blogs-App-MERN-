@@ -52,24 +52,32 @@ exports.signup = async (req, res) => {
 
 exports.login = async (req, res) => {
   try {
+    // get data
+    // validate data
+    // user check exists or not
+    // generate token and check password
+    // create cookie
+    // return response
     const { email, password } = req.body;
-
     if (!email || !password) {
-      return res.status(401).json({
+      return res.status(400).json({
         success: false,
-        message: "All Fields Are Required",
+        message: "Please Fill All the details",
+        password,
+        email,
       });
     }
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email })
     if (!user) {
       return res.status(401).json({
-        success: false,
-        message: "User Not Exists , Please Signup First",
+        success: true,
+        message: "User Is Not Registered,Please signup",
       });
     }
     if (await bcrypt.compare(password, user.password)) {
       const payload = {
         email: user.email,
+        accountType: user.accountType,
         id: user._id,
       };
       const token = await jwt.sign(payload, process.env.JWT_SECRET, {
@@ -94,10 +102,10 @@ exports.login = async (req, res) => {
       });
     }
   } catch (error) {
-    console.error(error);
+    console.log(error);
     return res.status(500).json({
       success: false,
-      message: "Not Able to login",
+      message: "Login Failed ,Please try again",
     });
   }
 };
