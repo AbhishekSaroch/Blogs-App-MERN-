@@ -1,20 +1,28 @@
 const Blogs = require("../models/Blogs");
+const {uploadImageToCloudinary}=require("../utils/imageUploader")
 const User=require("../models/User")
 exports.createBlog = async (req, res) => {
   try {
     const { title, description, category } = req.body;
+    const image = req.files ? req.files.image : undefined;
     const {userId} = req.body;
-    console.log("user",userId)
+    console.log("user",title,description,category)
     if (!title || !description || !category) {
       return res.status(401).json({
         success: false,
-        message: "All Fields are required",
+        message: "All Fields are required brooo",
       });
     }
+    const newBlogImage = await uploadImageToCloudinary(
+    	image,
+    	process.env.FOLDER_NAME
+    );
+    console.log("New ",newBlogImage)
     const newBlog = await Blogs.create({
       title,
       description,
       category,
+      image:newBlogImage.secure_url
     });
     await User.findByIdAndUpdate(
       userId,
@@ -30,7 +38,7 @@ exports.createBlog = async (req, res) => {
     console.log(error)
     return res.status(401).json({
       success: false,
-      message: "All Fields are required",
+      message: "Unauthorized",
     });
   }
 };
