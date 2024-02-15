@@ -6,6 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 import rootReducer from "./reducer";
 import { configureStore } from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
+import { Toaster } from "react-hot-toast";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const store=configureStore({
 	reducer:rootReducer,
@@ -15,6 +16,7 @@ root.render(
   <Provider store={store}>
   <BrowserRouter>
     <App />
+    <Toaster />
   </BrowserRouter>
   </Provider>
 );

@@ -1,23 +1,33 @@
 const Blogs = require("../models/Blogs");
 const {uploadImageToCloudinary}=require("../utils/imageUploader")
 const User=require("../models/User")
+require("dotenv").config()
+
+
 exports.createBlog = async (req, res) => {
   try {
-    const { title, description, category } = req.body;
-    const image = req.files ? req.files.image : undefined;
+    let { title, description, category } = req.body ;
+
+    const image = req.files && req.files.image ? req.files.image : undefined;
+
     const {userId} = req.body;
-    console.log("user",title,description,category)
-    if (!title || !description || !category) {
-      return res.status(401).json({
-        success: false,
-        message: "All Fields are required brooo",
-      });
-    }
+    console.log("USER ID",userId)
+    console.log("TITLE",title)
+    console.log("DESCRIPTION",description)
+    console.log("CATEGORY",category)
+    console.log("IMAGE IS ",image)
+    // if (!title || !description || !category) {
+    //   return res.status(401).json({
+    //     success: false,
+    //     message: "All Fields are required brooo",
+    //   });
+    // }
+
     const newBlogImage = await uploadImageToCloudinary(
     	image,
     	process.env.FOLDER_NAME
     );
-    console.log("New ",newBlogImage)
+    
     const newBlog = await Blogs.create({
       title,
       description,
@@ -42,6 +52,9 @@ exports.createBlog = async (req, res) => {
     });
   }
 };
+
+
+
 exports.getAllBlogs=async(req,res)=>{
     try {
       const allBlogs=await Blogs.find({},
@@ -87,7 +100,8 @@ exports.getBlogById=async(req,res)=>{
 }
 exports.deleteBlogs=async(req,res)=>{
   try {
-    const {blogid}=req.body;
+    const {blogid}=req.query;
+    console.log("BLOG ID FROM FE IS",blogid)
     const Blog=await Blogs.findByIdAndDelete({
       _id:blogid
     })
