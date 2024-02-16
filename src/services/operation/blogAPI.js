@@ -19,18 +19,12 @@ export const getAllBlogs = async () => {
      toast.dismiss(toastId)
     return result
   }
-export const createBlogAPI = async (userId,title,category,description,image) => {
-     const toastId = toast.loading("Loading...")
-    let result = []
-    try {
-      const response = await apiConnector("POST", CREATE_BLOGS_API,{
-        userId,
-        title,
-        category,
-        description,
-        image
-      })
-      console.log("BLOGAPICREATE API RESPONSE............", response)
+export const createBlogAPI = async (userId,title,description,category) => {
+  const toastId = toast.loading("Loading...");
+  try {
+    const response = await apiConnector("POST", CREATE_BLOGS_API,
+   { userId,title,description,category}
+    );
 
       if (!response.data.success) {
         throw new Error(response.data.message)
@@ -41,7 +35,7 @@ export const createBlogAPI = async (userId,title,category,description,image) => 
       toast.error(error.message)
     }
      toast.dismiss(toastId)
-    return result
+    // return result
   }
 
 

@@ -8,31 +8,37 @@ exports.createBlog = async (req, res) => {
   try {
     let { title, description, category } = req.body ;
 
-    const image = req.files && req.files.image ? req.files.image : undefined;
+    // const image = req.files && req.files.image ? req.files.image : undefined; 
 
     const {userId} = req.body;
     console.log("USER ID",userId)
     console.log("TITLE",title)
     console.log("DESCRIPTION",description)
     console.log("CATEGORY",category)
-    console.log("IMAGE IS ",image)
-    // if (!title || !description || !category) {
-    //   return res.status(401).json({
+   
+    if (!title || !description || !category) {
+      return res.status(400).json({
+        success: false,
+        message: "All Fields are required brooo",
+      });
+    }
+    // if (!image) {
+    //   return res.status(400).json({
     //     success: false,
-    //     message: "All Fields are required brooo",
+    //     message: "Image is required",
     //   });
     // }
 
-    const newBlogImage = await uploadImageToCloudinary(
-    	image,
-    	process.env.FOLDER_NAME
-    );
+    // const newBlogImage = await uploadImageToCloudinary(
+    // 	image,
+    // 	process.env.FOLDER_NAME
+    // );
     
     const newBlog = await Blogs.create({
       title,
       description,
       category,
-      image:newBlogImage.secure_url
+      // image:newBlogImage.secure_url
     });
     await User.findByIdAndUpdate(
       userId,
@@ -48,7 +54,7 @@ exports.createBlog = async (req, res) => {
     console.log(error)
     return res.status(401).json({
       success: false,
-      message: "Unauthorized",
+      message: "Not ABLE TO CREATE A BLOG",
     });
   }
 };

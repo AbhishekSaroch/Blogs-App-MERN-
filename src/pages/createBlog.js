@@ -10,29 +10,21 @@ const CreateBlog = () => {
   const [formData, setFormData] = useState({
     title: '',
     category: '',
-    description: '',
-    image: null 
+    description: ''
   });
 
-  const { title, category, description, image } = formData;
+  const { title, category, description } = formData;
 
   const handleOnChange = (e) => {
-    if (e.target.name === 'image') {
-      setFormData((prevData) => ({
-        ...prevData,
-        image: e.target.files[0].name
-      }));
-    } else {
       setFormData((prevData) => ({
         ...prevData,
         [e.target.name]: e.target.value
       }));
-    }
   };
   
   const handleOnSubmit = async (e) => {
     e.preventDefault();
-      dispatch(createBlogAPI(userId,title,category,description,image));
+      dispatch(createBlogAPI(userId,title,category,description));
     }
   
 
@@ -68,11 +60,6 @@ const CreateBlog = () => {
         value={description}
         onChange={handleOnChange}
       />
-      <input
-          type='file'
-          name='image'
-          onChange={handleOnChange}
-        />
       <button type='submit' className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'>
         POST
       </button>

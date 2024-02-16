@@ -48,7 +48,7 @@ const MyBlogs = () => {
                         </div>
                     ) : (<div>{userallDetails.firstName} OOPS you don't have any blogs ,Please   
                     <Link to={"/createBlog"}>
-                      Create Blogs
+                      <span className='text-xl font-medium bg-yellow-300 rounded px-2 py-2'>  Create Blogs</span>
                     </Link>
                     </div>))
                 }
