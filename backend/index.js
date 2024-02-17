@@ -8,7 +8,7 @@ const dotenv = require("dotenv");
 const {cloudinaryConnect } = require("./config/cloudinary");
 const fileUpload = require("express-fileupload");
 dotenv.config();
-
+const PORT=process.env.PORT || 4000
 const allowedOrigins = [
 	'http://localhost:3000'
   ];
@@ -35,7 +35,7 @@ const user=require("./routes/user");
 const blog=require("./routes/blog");
 app.use("/api/v1",user);
 app.use("/api/v1",blog);
-app.listen(5000,()=>{
+app.listen(PORT,()=>{
     console.log("App Started At 5000 Port")
 })
 
